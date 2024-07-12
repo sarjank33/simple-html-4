@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3  # Adjust as per your scaling needs
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: <your-ecr-url>/simple-html:${IMAGE_TAG}  # Update with your ECR URL and tag
+          ports:
+            - containerPort: 80
