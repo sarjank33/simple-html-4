@@ -13,10 +13,10 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    docker.build("ecr-url/${ECR_REPO}:${IMAGE_TAG}")
+                    docker.build("041738715000.dkr.ecr.us-east-2.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}")
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds-id', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         docker.withRegistry('', 'ecr:us-east-2') {
-                            docker.image("ecr-url/${ECR_REPO}:${IMAGE_TAG}").push()
+                            docker.image("041738715000.dkr.ecr.us-east-2.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}").push()
                         }
                     }
                 }
