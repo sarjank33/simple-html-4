@@ -8,7 +8,7 @@ pipeline {
         KUBE_MANIFESTS_REPO = 'https://github.com/Yudiz-Sarjan/simple-html.git'
         AWS_CREDENTIALS = 'aws-creds-id'  // Update with your actual credentials ID
         AWS_ACCOUNT_ID = '041738715000'   // Update with your actual AWS account ID
-        //KUBECONFIG = "/var/lib/jenkins/.kube/config" // Adjust this path as necessary
+        KUBECONFIG = "/var/lib/jenkins/.kube/config" // Adjust this path as necessary
     }
 
     stages {
