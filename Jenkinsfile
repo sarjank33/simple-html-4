@@ -51,8 +51,8 @@ pipeline {
                                           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         
                             // Replace the placeholder ${IMAGE_TAG} in Deployment.yaml with the actual image tag
-                            sh "sed -i 's|\\\$IMAGE_TAG|${IMAGE_TAG}|' Deployment.yaml"
-                        
+                            //sh "sed -i 's|\\\$IMAGE_TAG|${IMAGE_TAG}|' Deployment.yaml"
+                              sh "sed -i 's|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:\${IMAGE_TAG}|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:${IMAGE_TAG}|g' Deployment.yaml"
                             // Apply Deployment.yaml, Service.yaml, and Ingress.yaml to the EKS cluster
                             sh "kubectl apply -f Deployment.yaml"
                             sh "kubectl apply -f Service.yaml"
