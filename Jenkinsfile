@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-2'
-        ECR_REPO = '041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html'
+        ECR_REPO = '041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html' // Update with your ECR repository URL
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         KUBE_MANIFESTS_REPO = 'https://github.com/Yudiz-Sarjan/simple-html.git'
         AWS_CREDENTIALS = 'aws-creds-id'  // Update with your actual credentials ID
@@ -26,17 +26,11 @@ pipeline {
                         // Build Docker image
                         def customImage = docker.build("${ECR_REPO}:${IMAGE_TAG}")
 
-                        // Debug: Print the custom image name
-                        echo "Custom image name: ${customImage.id}"
-
                         // Tag Docker image
-                        sh "docker tag ${ECR_REPO}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
-                        
-                        // Debug: Verify the image tag
-                        sh "docker images ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
+                        sh "docker tag ${ECR_REPO}:${IMAGE_TAG} ${ECR_REPO}:${IMAGE_TAG}"
 
                         // Push Docker image to ECR
-                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
+                        sh "docker push ${ECR_REPO}:${IMAGE_TAG}"
                     }
                 }
             }
@@ -58,9 +52,6 @@ pipeline {
                         
                             // Replace the placeholder ${IMAGE_TAG} in Deployment.yaml with the actual image tag
                             sh "sed -i 's|\\\$IMAGE_TAG|${IMAGE_TAG}|' Deployment.yaml"
-                        
-                            // Debug: Print the Deployment.yaml file
-                            sh "cat Deployment.yaml"
                         
                             // Apply Deployment.yaml, Service.yaml, and Ingress.yaml to the EKS cluster
                             sh "kubectl apply -f Deployment.yaml"
