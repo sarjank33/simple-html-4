@@ -32,7 +32,7 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
-                git url: "${KUBE_MANIFESTS_REPO}", branch: 'main'
+                git url: "${KUBE_MANIFESTS_REPO}", branch: 'master', credentialsId: "${GIT_CREDENTIALS}"
                 sh "kubectl apply -f Deployment.yaml -f Service.yaml -f Ingress.yaml"
             }
         }
