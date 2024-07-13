@@ -7,6 +7,7 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         KUBE_MANIFESTS_REPO = 'https://github.com/Yudiz-Sarjan/simple-html.git'
         EKS_CLUSTER_NAME = 'eks-cluster'
+        AWS_CREDENTIALS = 'aws-creds-id'  // Update with your actual credentials ID
     }
 
     stages {
@@ -14,8 +15,8 @@ pipeline {
             steps {
                 script {
                     docker.build("041738715000.dkr.ecr.us-east-2.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}")
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds-id', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                        docker.withRegistry('', 'ecr:us-east-2') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: "${AWS_CREDENTIALS}", secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        docker.withRegistry('https://041738715000.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2') {
                             docker.image("041738715000.dkr.ecr.us-east-2.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}").push()
                         }
                     }
