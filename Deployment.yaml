@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 3  # Adjust as per your scaling needs
+  replicas: 2  # Adjust as per your scaling needs
   selector:
     matchLabels:
       app: nginx
@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: <your-ecr-url>/simple-html:${IMAGE_TAG}  # Update with your ECR URL and tag
+          image: 041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:${IMAGE_TAG}  # Update with your ECR URL and tag
           ports:
             - containerPort: 80
