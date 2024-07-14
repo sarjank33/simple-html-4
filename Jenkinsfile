@@ -41,7 +41,8 @@ pipeline {
             steps {
                 script {
                     // Clone the Kubernetes manifests repository
-                    git url: "${KUBE_MANIFESTS_REPO}", branch: 'master'
+                    //git url: "${KUBE_MANIFESTS_REPO}", branch: 'master'
+                   git url: "${KUBE_MANIFESTS_REPO}", branch: 'master', credentialsId: "${GITHUB_CREDENTIALS}"
 
                     // Set KUBECONFIG environment variable
                     withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
