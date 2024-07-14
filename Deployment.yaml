@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 3  # You have 3 replicas defined
+  replicas: 2  # You have 2 replicas defined
   selector:
     matchLabels:
       app: nginx
