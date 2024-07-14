@@ -9,6 +9,7 @@ pipeline {
         AWS_CREDENTIALS = 'aws-creds-id'  // Update with your actual credentials ID
         AWS_ACCOUNT_ID = '041738715000'   // Update with your actual AWS account ID
         KUBECONFIG = "/var/lib/jenkins/.kube/config" // Adjust this path as necessary
+        GITHUB_CREDENTIALS = 'git-creds-id'
     }
 
     stages {
