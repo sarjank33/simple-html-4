@@ -56,7 +56,7 @@ pipeline {
                             // Apply Deployment.yaml, Service.yaml, and Ingress.yaml to the EKS cluster
                             sh "kubectl apply -f Deployment.yaml"
                             sh "kubectl apply -f Service.yaml"
-                            sh "kubectl apply -f Ingress.yaml"
+                            //sh "kubectl apply -f Ingress.yaml"
                         }
                     }
                 }
