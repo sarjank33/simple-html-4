@@ -9,7 +9,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer  # Expose service externally via AWS ALB
+  type: NodePort  # Expose service externally via AWS ALB
 # apiVersion: v1
 # kind: Service
 # metadata:

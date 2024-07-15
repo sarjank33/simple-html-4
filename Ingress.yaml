@@ -1,19 +1,22 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: nginx-ingress
-#   annotations:
-#     kubernetes.io/ingress.class: alb
-#     alb.ingress.kubernetes.io/scheme: internet-facing
-#     alb.ingress.kubernetes.io/target-type: ip
-# spec:
-#   rules:
-#     - http:
-#         paths:
-#           - pathType: Prefix
-#             path: /
-#             backend:
-#               service:
-#                 name: nginx-service
-#                 port:
-#                   number: 80
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:041738715000:certificate/e79fe978-3ea9-4d50-944d-f233a2e8cab0
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-service
+                port:
+                  number: 80
