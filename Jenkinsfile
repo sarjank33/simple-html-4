@@ -3,14 +3,14 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-2'
-        ECR_REPO = '041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html' // Update with your ECR repository URL
+        ECR_REPO = '041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         APP_REPO = 'https://github.com/Yudiz-Sarjan/simple-html.git'
-        KUBE_MANIFESTS_REPO = 'https://github.com/Yudiz-Sarjan/simple-html.git'
-        AWS_CREDENTIALS = 'aws-creds-id'  // Update with your actual credentials ID
-        AWS_ACCOUNT_ID = '041738715000'   // Update with your actual AWS account ID
-        KUBECONFIG = "/var/lib/jenkins/.kube/config" // Adjust this path as necessary
+        AWS_CREDENTIALS = 'aws-creds-id'
+        AWS_ACCOUNT_ID = '041738715000'
+        KUBECONFIG = "/var/lib/jenkins/.kube/config"
         GITHUB_CREDENTIALS = 'git-creds-id'
+        MANIFESTS_PATH = "/var/lib/jenkins/k8s-manifests"
     }
 
     stages {
@@ -59,15 +59,6 @@ pipeline {
             }
         }
 
-        stage('Clone Kubernetes Manifests Repository') {
-            steps {
-                script {
-                    // Clone the Kubernetes manifests repository
-                    git url: "${KUBE_MANIFESTS_REPO}", branch: 'master', credentialsId: "${GITHUB_CREDENTIALS}"
-                }
-            }
-        }
-
         stage('Deploy to EKS') {
             steps {
                 script {
@@ -79,12 +70,12 @@ pipeline {
                                           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
 
                             // Replace the placeholder ${IMAGE_TAG} in Deployment.yaml with the actual image tag
-                            sh "sed -i 's|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:\${IMAGE_TAG}|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:${IMAGE_TAG}|g' Deployment.yaml"
+                            sh "sed -i 's|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:\${IMAGE_TAG}|041738715000.dkr.ecr.us-east-2.amazonaws.com/simple-html:${IMAGE_TAG}|g' ${MANIFESTS_PATH}/Deployment.yaml"
                             
                             // Apply Deployment.yaml, Service.yaml, and Ingress.yaml to the EKS cluster
-                            sh "kubectl apply -f Deployment.yaml"
-                            sh "kubectl apply -f Service.yaml"
-                            sh "kubectl apply -f Ingress.yaml"
+                            sh "kubectl apply -f ${MANIFESTS_PATH}/Deployment.yaml"
+                            sh "kubectl apply -f ${MANIFESTS_PATH}/Service.yaml"
+                            sh "kubectl apply -f ${MANIFESTS_PATH}/Ingress.yaml"
                         }
                     }
                 }
